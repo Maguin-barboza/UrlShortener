@@ -1,5 +1,11 @@
+using Microsoft.EntityFrameworkCore;
+using UrlShortener.Command;
+using UrlShortener.Data.Context;
 using UrlShortener.Data.Repository;
+using UrlShortener.Domain.Interfaces.Commands;
+using UrlShortener.Domain.Interfaces.Queries;
 using UrlShortener.Domain.Interfaces.Repositories;
+using UrlShortener.Query;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,7 +19,8 @@ builder.Services.AddResponseCaching();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-//ConfigureService(builder.Services);
+ConfigureService(builder.Services);
+ConfigureContext(builder.Services);
 
 var app = builder.Build();
 
@@ -35,8 +42,21 @@ app.Run();
 
 void ConfigureService(IServiceCollection services)
 {
-    //services.Add<IUrlRepository, UrlRepository>();
+    services.AddTransient<IUrlRepository, UrlRepository>();
+    
+    services.AddTransient<IUrlQuery, UrlQuery>();
+    
+    services.AddTransient<IShortenUrlCommand, ShortenUrlCommand>();
+    services.AddTransient<IUrlAddCommand, UrlAddCommand>();
 
+    services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+}
 
-    //services.AddDbContext<UrlShortenerContext>();
+void ConfigureContext(IServiceCollection services)
+{
+    string connectionString;
+
+    connectionString = "Server=MAGNO-PC\\MSSQLSRVMAGNO;Database=UrlShortener;User Id=Dev;Password=devadmin;";
+    services.AddDbContext<UrlShortContext>(context =>
+        context.UseSqlServer(connectionString));
 }

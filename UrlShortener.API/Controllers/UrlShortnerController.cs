@@ -1,4 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using UrlShortener.Domain.DTOs;
+using UrlShortener.Domain.Interfaces.Commands;
+using UrlShortener.Domain.Interfaces.Queries;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -8,23 +11,55 @@ namespace UrlShortener.API.Controllers
     [ApiController]
     public class UrlShortnerController : ControllerBase
     {
+        private readonly IUrlQuery _query;
+        private readonly IUrlAddCommand _command;
+
+        public UrlShortnerController(IUrlQuery query, IUrlAddCommand command)
+        {
+            _query = query;
+            _command = command;
+        }
+
         [HttpGet("teste")]
         [ResponseCache(Duration = 120)]
         public IActionResult GetAll()
         {
-            return Redirect("https://www.google.com");
+            throw new NotImplementedException();
         }
 
         [HttpGet("{urlEncurtada}")]
-        public IActionResult GetAll(string urlEncurtada)
+        [ResponseCache(Duration = 120)]
+        public async Task<IActionResult> RedirectAsync(string urlEncurtada)
         {
-            throw new NotImplementedException();
+            try
+            {
+                string urlOriginal;
+
+                urlOriginal = await _query.RetornarUrlOriginal(urlEncurtada);
+                return Redirect(urlOriginal);
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
 
         [HttpPost]
-        public IActionResult Post(string url)
+        public async Task<IActionResult> Post([FromBody]string url)
         {
-            throw new NotImplementedException();
+            UrlDTO urlDTO;
+
+            //TODO: Criar uma ModelView para receber a informação do Front-End;
+            //      Tal ModelView só passará a urloriginal para o command.
+            try
+            {
+                urlDTO = await _command.Add(url);
+                return Ok(urlDTO);
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

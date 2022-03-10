@@ -1,19 +1,18 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using System.Net;
 using UrlShortener.Domain.DTOs;
+using UrlShortener.Domain.Interfaces.Queries;
 using UrlShortener.Domain.Interfaces.Repositories;
-using UrlShortener.Domain.Interfaces.Services;
 using UrlShortener.Domain.Models;
 
-namespace UrlShortener.Service.Services
+namespace UrlShortener.Query
 {
-    public class UrlService : IUrlQuery
+    public class UrlQuery : IUrlQuery
     {
         private readonly IUrlRepository _repository;
         private readonly IMapper _mapper;
 
-        public UrlService(IUrlRepository repository, IMapper mapper)
+        public UrlQuery(IUrlRepository repository, IMapper mapper)
         {
             _repository = repository;
             _mapper = mapper;
