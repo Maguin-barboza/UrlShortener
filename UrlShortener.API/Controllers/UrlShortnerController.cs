@@ -8,10 +8,11 @@ namespace UrlShortener.API.Controllers
     [ApiController]
     public class UrlShortnerController : ControllerBase
     {
-        [HttpGet]
+        [HttpGet("teste")]
+        [ResponseCache(Duration = 120)]
         public IActionResult GetAll()
         {
-            throw new NotImplementedException();
+            return Redirect("https://www.google.com");
         }
 
         [HttpGet("{urlEncurtada}")]
