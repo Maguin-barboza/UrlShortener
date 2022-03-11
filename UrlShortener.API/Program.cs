@@ -56,8 +56,9 @@ void ConfigureContext(IServiceCollection services)
 {
     string connectionString;
 
-    //connectionString = "Server=MAGNO-PC\\MSSQLSRVMAGNO;Database=UrlShortener;User Id=Dev;Password=devadmin;";
-    connectionString = "Server=DESKTOP-PF0OERK\\SQLEXPRESS;Database=UrlShortener;Trusted_Connection=true";
+    connectionString = "Server=MAGNO-PC\\MSSQLSRVMAGNO;Database=UrlShortener;User Id=Dev;Password=devadmin;";
+    //connectionString = "Server=DESKTOP-PF0OERK\\SQLEXPRESS;Database=UrlShortener;Trusted_Connection=true";
+
     services.AddDbContext<UrlShortContext>(context =>
         context.UseSqlServer(connectionString));
 }

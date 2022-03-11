@@ -4,10 +4,22 @@ GO
 USE UrlShortener
 GO
 
+CREATE TABLE UrlsOriginais
+(
+	Id INT IDENTITY(1,1),
+	Url VARCHAR(200) NOT NULL
+)
+GO
+
+ALTER TABLE UrlsOriginais
+	ADD CONSTRAINT Pk_UrlsOriginais
+		PRIMARY KEY(Id)
+GO
+
 CREATE TABLE Urls
 (
 	Id INT IDENTITY(1,1),
-	UrlOriginal VARCHAR(200) NOT NULL,
+	IdUrlOriginal INT NOT NULL,
 	UrlEncurtada VARCHAR(10) NOT NULL,
 	DtCriacao DATETIME NOT NULL
 )
@@ -16,4 +28,10 @@ GO
 ALTER TABLE Urls
 	ADD CONSTRAINT PK_Urls
 		PRIMARY KEY(Id)
+GO
+
+ALTER TABLE Urls
+	ADD CONSTRAINT FK_Urls_UrlsOriginais
+		FOREIGN KEY(IdUrlOriginal)
+			REFERENCES UrlsOriginais(Id)
 GO

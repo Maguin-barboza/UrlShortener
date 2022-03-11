@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using UrlShortener.API.Inputs;
 using UrlShortener.Domain.DTOs;
 using UrlShortener.Domain.Interfaces.Commands;
 using UrlShortener.Domain.Interfaces.Queries;
@@ -7,7 +8,8 @@ using UrlShortener.Domain.Interfaces.Queries;
 
 namespace UrlShortener.API.Controllers
 {
-    [Route("api/[controller]")]
+    //[Route("api/[controller]")]
+    [Route("")]
     [ApiController]
     public class UrlShortnerController : ControllerBase
     {
@@ -20,12 +22,14 @@ namespace UrlShortener.API.Controllers
             _command = command;
         }
 
-        [HttpGet("teste")]
-        [ResponseCache(Duration = 120)]
-        public IActionResult GetAll()
-        {
-            throw new NotImplementedException();
-        }
+
+        //TODO: Deletar essa parte.
+        //[HttpGet("teste")]
+        //[ResponseCache(Duration = 120)]
+        //public IActionResult GetAll()
+        //{
+        //    throw new NotImplementedException();
+        //}
 
         [HttpGet("{urlEncurtada}")]
         [ResponseCache(Duration = 120)]
@@ -45,15 +49,13 @@ namespace UrlShortener.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody]string url)
+        public async Task<IActionResult> Post([FromBody]UrlOriginalInputModel urlInputModel)
         {
             UrlDTO urlDTO;
 
-            //TODO: Criar uma ModelView para receber a informação do Front-End;
-            //      Tal ModelView só passará a urloriginal para o command.
             try
             {
-                urlDTO = await _command.Add(url);
+                urlDTO = await _command.Add(urlInputModel.UrlOriginal);
                 return Ok(urlDTO);
             }
             catch(Exception ex)

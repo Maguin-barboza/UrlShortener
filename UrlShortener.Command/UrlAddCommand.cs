@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-
+using System.Text.RegularExpressions;
 using UrlShortener.Domain.DTOs;
 using UrlShortener.Domain.Interfaces.Commands;
 using UrlShortener.Domain.Interfaces.Repositories;
@@ -28,8 +28,9 @@ namespace UrlShortener.Command
 
             try
             {
-                //TODO: Validar se url é válida
-                //      Verificar se url já existe
+                if (!urlValidation(originalUrl))
+                    throw new Exception("Url não é válida.");
+
                 shortUrl = _shortenUrl.ShortenUrl(originalUrl);
                 url = new Url() { UrlOriginal = originalUrl, UrlEncurtada = shortUrl, DtCriacao = DateTime.Now };
                 await _repository.Add(url);
@@ -41,8 +42,17 @@ namespace UrlShortener.Command
             {
                 throw new Exception(ex.Message);
             }
-            
-
         }
+
+        private bool urlValidation(string originalUrl)
+        {
+            string pattern = @"^(http|ftp|https|www)://([\w+?\.\w+])+([a-zA-Z0-9\~\!\@\#\$\%\^\&\*\(\)_\-\=\+\\\/\?\.\:\;\'\,]*)?$";
+            Regex urlRegex = new Regex(pattern, RegexOptions.IgnoreCase);
+
+            Match urlTest = urlRegex.Match(originalUrl);
+            return urlTest.Success;
+        }
+
+
     }
 }
