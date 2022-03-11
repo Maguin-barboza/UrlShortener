@@ -13,6 +13,5 @@ namespace UrlShortener.Data.Context
         public UrlShortContext(DbContextOptions options) : base(options)  {   }
 
         public DbSet<Url> Urls { get; set; }
-        public DbSet<UrlOriginal> UrlsOriginais { get; set; }
     }
 }
