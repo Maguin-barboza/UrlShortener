@@ -8,6 +8,6 @@ namespace UrlShortener.Domain.Interfaces.Commands
 {
     public interface IShortenUrlCommand
     {
-        string ShortenUrl(string urlOriginal);
+        Task<string> ShortenUrl(string urlOriginal);
     }
 }

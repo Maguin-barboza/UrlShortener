@@ -32,6 +32,19 @@ namespace UrlShortener.Query
             }
         }
 
+        public async Task<bool> UrlShortExists(string urlEncurtada)
+        {
+            try
+            {
+                await GetByUrlEncurtada(urlEncurtada);
+                return true;
+            }
+            catch(Exception ex)
+            {
+                return false;
+            }
+        }
+
         private async Task<UrlDTO> GetByUrlEncurtada(string urlEncurtada)
         {
             try

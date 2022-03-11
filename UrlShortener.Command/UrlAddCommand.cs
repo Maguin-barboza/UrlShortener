@@ -31,7 +31,7 @@ namespace UrlShortener.Command
                 if (!urlValidation(originalUrl))
                     throw new Exception("Url não é válida.");
 
-                shortUrl = _shortenUrl.ShortenUrl(originalUrl);
+                shortUrl = await _shortenUrl.ShortenUrl(originalUrl);
                 url = new Url() { UrlOriginal = originalUrl, UrlEncurtada = shortUrl, DtCriacao = DateTime.Now };
                 await _repository.Add(url);
 
