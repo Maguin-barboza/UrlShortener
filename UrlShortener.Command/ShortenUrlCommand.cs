@@ -9,9 +9,13 @@ namespace UrlShortener.Command
 {
     public class ShortenUrlCommand : IShortenUrlCommand
     {
-        public Task<string> ShortenUrl(string urlOriginal)
+        public string ShortenUrl(string urlOriginal)
         {
-            throw new NotImplementedException();
+            string urlEncurtada;
+
+            byte[] toEncodeAsByte = ASCIIEncoding.UTF8.GetBytes(urlOriginal);
+            urlEncurtada = Convert.ToBase64String(toEncodeAsByte, 0, 5);
+            return urlEncurtada;
         }
     }
 }

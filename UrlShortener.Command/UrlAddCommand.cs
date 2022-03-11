@@ -30,7 +30,7 @@ namespace UrlShortener.Command
             {
                 //TODO: Validar se url é válida
                 //      Verificar se url já existe
-                shortUrl = await _shortenUrl.ShortenUrl(originalUrl);
+                shortUrl = _shortenUrl.ShortenUrl(originalUrl);
                 url = new Url() { UrlOriginal = originalUrl, UrlEncurtada = shortUrl, DtCriacao = DateTime.Now };
                 await _repository.Add(url);
 
